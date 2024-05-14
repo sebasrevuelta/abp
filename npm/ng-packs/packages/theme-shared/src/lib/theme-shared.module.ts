@@ -41,6 +41,7 @@ import { AbpVisibleDirective, DisabledDirective } from './directives';
 import { FormInputComponent } from './components/form-input/form-input.component';
 import { FormCheckboxComponent } from './components/checkbox/checkbox.component';
 import { tenantNotFoundProvider } from './providers/tenant-not-found.provider';
+import { provideToasterInterceptor } from './providers/toaster-interceptor.provider';
 
 const declarationsWithExports = [
   BreadcrumbComponent,
@@ -94,7 +95,12 @@ export class BaseThemeSharedModule {}
 })
 export class ThemeSharedModule {
   static forRoot(
-    { httpErrorConfig, validation = {}, confirmationIcons = {} } = {} as RootParams,
+    {
+      httpErrorConfig,
+      validation = {},
+      confirmationIcons = {},
+      toastInterceptorConfig,
+    } = {} as RootParams,
   ): ModuleWithProviders<ThemeSharedModule> {
     return {
       ngModule: ThemeSharedModule,
@@ -146,6 +152,7 @@ export class ThemeSharedModule {
         },
         tenantNotFoundProvider,
         DEFAULT_HANDLERS_PROVIDERS,
+        ...provideToasterInterceptor(toastInterceptorConfig),
       ],
     };
   }
